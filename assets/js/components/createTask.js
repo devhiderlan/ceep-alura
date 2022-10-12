@@ -1,10 +1,10 @@
 import ButtonConclude from './concludeTask.js'
 import ButtonDelete from './deleteTask.js'
+import { loadTask } from './loadTask.js'
 
 export function handleNewItem(event) {
   event.preventDefault()
   const tasks = JSON.parse(localStorage.getItem('tasks')) || []
-  const list = document.querySelector('[data-list]')
   const input = document.querySelector('[data-form-input]')
   const valueInput = input.value
 
@@ -17,13 +17,13 @@ export function handleNewItem(event) {
     formattedDate
   }
 
-  const updatedTask = [... tasks, datas]
-
-  list.appendChild(Task(datas))
+  const updatedTask = [...tasks, datas]
 
   localStorage.setItem('tasks', JSON.stringify(updatedTask))
 
   input.value = ''
+
+  loadTask()
 }
 
 export const Task = ({ valueInput, formattedDate }) => {
