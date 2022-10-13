@@ -10,11 +10,15 @@ export function handleNewItem(event) {
 
   const calendar = document.querySelector('[data-form-date]')
   const date = moment(calendar.value)
+  const hour = date.format('HH:mm')
   const formattedDate = date.format('DD/MM/YYYY') //, h:mm:ss a'
+  const concluded = false
 
   const datas = {
     valueInput,
-    formattedDate
+    formattedDate,
+    hour,
+    concluded
   }
 
   const updatedTask = [...tasks, datas]
@@ -26,14 +30,20 @@ export function handleNewItem(event) {
   loadTask()
 }
 
-export const Task = ({ valueInput, formattedDate }) => {
+export const Task = ({ valueInput, hour, concluded }, id) => {
   const task = document.createElement('li')
+
+  const content = `<p class="content">${hour} - ${valueInput}</p>`
+
+  if (concluded) {
+    task.classList.add('done')
+  }
+
   task.classList.add('task')
 
-  const content = `<p class="content">${formattedDate} - ${valueInput}</p>`
   task.innerHTML = content
-  task.appendChild(ButtonConclude())
-  task.appendChild(ButtonDelete())
+  task.appendChild(ButtonConclude(loadTask, id ))
+  task.appendChild(ButtonDelete(loadTask, id))
 
   return task
 }
